@@ -48,7 +48,7 @@ $vendor_payment_mode_select = apply_filters('wcmp_vendor_payment_mode', $payment
         <div class="panel panel-default pannel-outer-heading">
             <div class="panel-heading">
                 <h3><?php _e('Payment Method', 'dc-woocommerce-multi-vendor'); ?></h3>
-            </div>                     
+            </div>
             <div class="panel-body panel-content-padding">
                 <div class="form-group">
                     <label for="vendor_payment_mode" class="control-label col-sm-3 col-md-3"><?php _e('Choose Payment Method', 'dc-woocommerce-multi-vendor'); ?></label>
@@ -80,7 +80,7 @@ $vendor_payment_mode_select = apply_filters('wcmp_vendor_payment_mode', $payment
                             <div class="col-md-6 col-sm-9">
 
                                 <select id="vendor_account_holder_name" name="vendor_account_holder_name" class="form-control">
-                                    
+
                                     <?php if ($payment_admin_settings['payment_method_crypto_btc'] == 'Enable') { ?>
                                         <option <?php if ($vendor_account_holder_name['value'] == 'bitcoin') echo 'selected' ?> value="Bitcoin"><?php _e('Bitcoin', 'dc-woocommerce-multi-vendor'); ?></option>
                                     <?php } ?>
@@ -103,6 +103,10 @@ $vendor_payment_mode_select = apply_filters('wcmp_vendor_payment_mode', $payment
 
                                     <?php if ($payment_admin_settings['payment_method_crypto_znz'] == 'Enable') { ?>
                                         <option <?php if ($vendor_account_holder_name['value'] == 'zenzo') echo 'selected' ?> value="Zenzo"><?php _e('Zenzo', 'dc-woocommerce-multi-vendor'); ?></option>
+                                    <?php } ?>
+
+                                    <?php if ($payment_admin_settings['payment_method_crypto_cds'] == 'Enable') { ?>
+                                        <option <?php if ($vendor_account_holder_name['value'] == 'cryptodevelopmentservices') echo 'selected' ?> value="CryptoDevelopmentServices"><?php _e('CryptoDevelopmentServices', 'dc-woocommerce-multi-vendor'); ?></option>
                                     <?php } ?>
 
                                     <?php if ($payment_admin_settings['payment_method_crypto_cdzc'] == 'Enable') { ?>
@@ -159,8 +163,8 @@ $vendor_payment_mode_select = apply_filters('wcmp_vendor_payment_mode', $payment
 
                                     <?php if ($payment_admin_settings['payment_method_crypto_ark'] == 'Enable') { ?>
                                         <option <?php if ($vendor_account_holder_name['value'] == 'ark') echo 'selected' ?> value="Ark"><?php _e('Ark', 'dc-woocommerce-multi-vendor'); ?></option>
-                                    <?php } ?>        
-                                
+                                    <?php } ?>
+
                                 </select>
                             </div>
                         </div>
@@ -242,11 +246,11 @@ $vendor_payment_mode_select = apply_filters('wcmp_vendor_payment_mode', $payment
 
 
 
-                <?php 
+                <?php
                 echo '<div class="payment-gateway payment-gateway-stripe_masspay">';
                 if (isset($payment_admin_settings['payment_method_stripe_masspay']) && $payment_admin_settings['payment_method_stripe_masspay'] = 'Enable') {
                 	$account_type = apply_filters('wcmp_vendor_stripe_connect_account_type', 'standard', $payment_admin_settings, $user_id);
-                    
+
                 	if( $account_type == 'standard' || $account_type == 'express' ) {
 						$testmode = get_wcmp_vendor_settings('testmode', 'payment', 'stripe_gateway') === "Enable" ? true : false;
 						$client_id = $testmode ? get_wcmp_vendor_settings('test_client_id', 'payment', 'stripe_gateway') : get_wcmp_vendor_settings('live_client_id', 'payment', 'stripe_gateway');
@@ -293,10 +297,10 @@ $vendor_payment_mode_select = apply_filters('wcmp_vendor_payment_mode', $payment
 							} else {
 								$vendor_connected = get_user_meta($user_id, 'vendor_connected', true);
 								$connected = true;
-	
+
 								if (isset($vendor_connected) && $vendor_connected == 1) {
 									$admin_client_id = get_user_meta($user_id, 'admin_client_id', true);
-	
+
 									if ($admin_client_id == $client_id) {
 										?>
 										<div class="form-group">
@@ -313,10 +317,10 @@ $vendor_payment_mode_select = apply_filters('wcmp_vendor_payment_mode', $payment
 									$connected = false;
 								}
 								if (!$connected) {
-	
+
 									$status = delete_user_meta($user_id, 'vendor_connected');
 									$status = delete_user_meta($user_id, 'admin_client_id');
-	
+
 									// Show OAuth link
 									$authorize_request_body = array(
 										'response_type' => 'code',
@@ -327,7 +331,7 @@ $vendor_payment_mode_select = apply_filters('wcmp_vendor_payment_mode', $payment
 									);
 									$url = apply_filters( 'wcmp_vendor_stripe_connect_account_type_request_url', 'https://connect.stripe.com/oauth/authorize', $account_type ) . '?' . http_build_query( apply_filters( 'wcmp_vendor_stripe_connect_account_type_request_params' , $authorize_request_body, $account_type ) );
 									$stripe_connect_url = $WCMp->plugin_url . 'assets/images/blue-on-light.png';
-	
+
 									if (!$status) {
 										?>
 										<div class="form-group">
